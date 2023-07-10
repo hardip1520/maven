@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout'){
+            steps{
+                git branch: 'master', credentialsId: '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', url: 'https://github.com/hardip1520/lab2'
+            }
+        }
+        stage('Build') {
+            steps {
+                // Clone the repository
+                git url: 'https://github.com/hardip1520/lab2.git', branch: 'master'
+
+                // Change to the Maven project directory
+                dir('Welcome_to_COMP367/demo') {
+                    // Build the Maven project
+                    bat 'mvn clean install'
+                    bat 'mvn jetty:run'
+                }
+            }
+        }
+    }
+}
