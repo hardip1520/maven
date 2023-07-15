@@ -1,6 +1,13 @@
 pipeline {
-  agent any
-
+  agent {
+    label 'docker'
+  }
+  
+  environment {
+    DOCKER_HUB_USERNAME = credentials('docker-hub-credentials').username
+    DOCKER_HUB_PASSWORD = credentials('docker-hub-credentials').password
+  }
+  
   stages {
     stage('Checkout') {
       steps {
@@ -8,22 +15,27 @@ pipeline {
       }
     }
 
-    stage('Build and Push Docker Image') {
-      environment {
-        DOCKER_HUB_USERNAME = credentials('4d14794d-3b77-4460-af75-34f19de08dee').username
-        DOCKER_HUB_PASSWORD = credentials('4d14794d-3b77-4460-af75-34f19de08dee').password
-      }
+    stage('Build Maven Project') {
       steps {
-        sh 'docker build -t hardip1520/jenkins-sample .'
-        sh 'docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD'
-        sh 'docker push hardip1520/jenkins-sample'
+        sh 'mvn clean package'
       }
     }
-
-    stage('Pull and Run Docker Image') {
+    
+    stage('Docker Build') {
       steps {
-        sh 'docker pull hardip1520/jenkins-sample'
-        sh 'docker run -d -p 8080:8080 hardip1520/jenkins-sample'
+        sh 'docker build -t hardip1520/jenkins-sample .'
+      }
+    }
+    
+    stage('Docker Login') {
+      steps {
+        sh 'docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD'
+      }
+    }
+    
+    stage('Docker Push') {
+      steps {
+        sh 'docker push hardip1520/jenkins-sample'
       }
     }
   }
