@@ -8,12 +8,6 @@ pipeline {
         checkout scm
       }
     }
-
-    stage('Build Maven Project') {
-      steps {
-        sh 'mvn clean package'
-      }
-    }
     
     stage('Docker Build') {
       steps {
