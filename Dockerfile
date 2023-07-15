@@ -1,5 +1,5 @@
 # Base image with JDK for building the application
-FROM maven:3.8.4-openjdk-11 AS builder
+FROM maven:3.8.4-openjdk-19 AS builder
 
 # Set the working directory inside the container
 WORKDIR /mavenapp
@@ -14,7 +14,7 @@ COPY src ./src
 RUN mvn clean package
 
 # Base image with Java and application server for running the application
-FROM tomcat:9.0.56-jdk11
+FROM tomcat:9.0.56-jdk19
 
 # Copy the built application artifact from the builder stage to the application server
 COPY --from=builder /meavenapp/target/*.war /usr/local/tomcat/webapps/ROOT.war
