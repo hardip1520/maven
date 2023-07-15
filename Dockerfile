@@ -1,5 +1,5 @@
 # Base image with JDK for building the application
-FROM maven:3.8.4-openjdk-1  AS builder
+FROM maven:3.8.4-openjdk-17 AS builder
 
 # Set the working directory inside the container
 WORKDIR /mavenapp
