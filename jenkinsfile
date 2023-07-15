@@ -1,24 +1,41 @@
 pipeline {
-    agent any
+  agent any
 
-    stages {
-        stage('Checkout'){
-            steps{
-                git branch: 'main', credentialsId: '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', url: 'https://github.com/hardip1520/maven.git'
-            }
-        }
-        stage('Build') {
-            steps {
-                // Clone the repository
-                git url: 'https://github.com/hardip1520/maven.git', branch: 'main'
-
-                // Change to the Maven project directory
-                dir('Welcome_to_COMP367/demo') {
-                    // Build the Maven project
-                    bat 'mvn clean install'
-                    bat 'mvn jetty:run'
-                }
-            }
-        }
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
     }
+
+    stage('Build') {
+      steps {
+        sh 'mvn clean package'
+      }
+    }
+
+    stage('Build Docker Image') {
+      steps {
+        script {
+          def imageTag = "hardip1520/jenkins-sample:${env.BUILD_ID}"
+          docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+            def dockerImage = docker.build(imageTag, '.')
+            dockerImage.push()
+          }
+        }
+      }
+    }
+
+    stage('Pull and Run Docker Image') {
+      steps {
+        script {
+          def imageTag = "hardip1520/jenkins-sample:${env.BUILD_ID}"
+          docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+            docker.image(imageTag).pull()
+            docker.image(imageTag).run('-p 8080:8080 -d')
+          }
+        }
+      }
+    }
+  }
 }
