@@ -8,33 +8,22 @@ pipeline {
       }
     }
 
-    stage('Build') {
-      steps {
-        sh 'mvn clean package'
+    stage('Build and Push Docker Image') {
+      environment {
+        DOCKER_HUB_USERNAME = credentials('docker-hub-credentials').username
+        DOCKER_HUB_PASSWORD = credentials('docker-hub-credentials').password
       }
-    }
-
-    stage('Build Docker Image') {
       steps {
-        script {
-          def imageTag = "hardip1520/jenkins-sample:${env.BUILD_ID}"
-          docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-            def dockerImage = docker.build(imageTag, '.')
-            dockerImage.push()
-          }
-        }
+        sh 'docker build -t hardip1520/jenkins-sample .'
+        sh 'docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD'
+        sh 'docker push hardip1520/jenkins-sample'
       }
     }
 
     stage('Pull and Run Docker Image') {
       steps {
-        script {
-          def imageTag = "hardip1520/jenkins-sample:${env.BUILD_ID}"
-          docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-            docker.image(imageTag).pull()
-            docker.image(imageTag).run('-p 8080:8080 -d')
-          }
-        }
+        sh 'docker pull hardip1520/jenkins-sample'
+        sh 'docker run -d -p 8080:8080 hardip1520/jenkins-sample'
       }
     }
   }
