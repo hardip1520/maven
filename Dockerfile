@@ -2,7 +2,7 @@
 FROM maven:3.8.4-openjdk-17 AS builder
 
 # Set the working directory inside the container
-WORKDIR /mavenapp
+WORKDIR /app
 
 # Copy the project's POM file to the container
 COPY pom.xml .
@@ -17,7 +17,7 @@ RUN mvn clean package
 FROM tomcat:9.0.56-jdk17
 
 # Copy the built application artifact from the builder stage to the application server
-COPY --from=builder /meavenapp/target/*.war /usr/local/tomcat/webapps/ROOT.war
+COPY --from=builder /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
 # Expose the default port of the application server
 EXPOSE 8080
