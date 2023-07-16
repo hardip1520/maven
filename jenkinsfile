@@ -5,9 +5,6 @@ pipeline {
 options {
     // Add the heartbeat check interval flag to address the warning
     timeout(time: 1, unit: 'HOURS')
-    configure { node ->
-      node / 'script' << 'env.JENKINS_NODE_COOKIE=durable-d036aeaf64084046be1116bc105b65e3'
-    }
   }
 
   
