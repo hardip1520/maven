@@ -15,11 +15,11 @@ options {
       }
     }
 
-    stage('SSH into remote server') {
-          steps {
-            sh 'sh jenkins-automate.sh'
-          }
-        }
+//     stage('SSH into remote server') {
+//           steps {
+//             sh 'sh jenkins-automate.sh'
+//           }
+//         }
 
     stage('Docker Build') {
       steps {
@@ -29,7 +29,8 @@ options {
 
     stage('Docker Run') {
           steps {
-            sh 'docker run -p 9090:8080 -d hardip1520/jenkins-sample'
+//             sh 'docker run -p 9090:8080 -d hardip1520/jenkins-sample'
+            sh 'docker-compose up -d'
           }
         }
     
