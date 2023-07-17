@@ -7,6 +7,6 @@ COPY src ./src
 
 RUN mvn clean package
 
-COPY --from=builder /app/target/*.jar /app/application.jar
+EXPOSE 8080
 
-#CMD ["java", "-jar", "/app/application.jar"]
+ENTRYPOINT ["java", "-jar", "target/spring-rest-comp-367-1.0.jar"]
