@@ -14,7 +14,13 @@ options {
         checkout scm
       }
     }
-    
+
+    stage('SSH into remote server') {
+          steps {
+            sh 'sh jenkins-automate.sh'
+          }
+        }
+
     stage('Docker Build') {
       steps {
         sh 'docker build -t hardip1520/jenkins-sample .'
