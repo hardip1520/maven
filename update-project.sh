@@ -13,4 +13,4 @@ docker push hardip1520/jenkins-sample
 
 echo "running container"
 
-docker run -p 9090:8080 -d hardip1520/jenkins-sample
+docker-compose up -d
