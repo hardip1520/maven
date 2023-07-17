@@ -1,3 +1,3 @@
-cd /home/project/maven
+cd /root/project/maven
 
 sh update-project.sh
