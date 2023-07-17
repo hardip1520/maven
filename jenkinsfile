@@ -35,10 +35,10 @@ options {
 //         }
     
     
-    stage('Docker Push') {
-      steps {
-        sh 'docker push hardip1520/jenkins-sample'
-      }
-    }
+//     stage('Docker Push') {
+//       steps {
+//         sh 'docker push hardip1520/jenkins-sample'
+//       }
+//     }
   }
 }
