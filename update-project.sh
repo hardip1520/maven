@@ -5,7 +5,7 @@ docker build -t hardip1520/jenkins-sample .
 
 echo "docker login"
 
-docker login --userame=hardip1520 --pasword=Hardip@1520
+docker login --username=hardip1520 --password=Hardip@1520
 
 echo "pushing image"
 
