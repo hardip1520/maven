@@ -15,24 +15,24 @@ options {
       }
     }
 
-//     stage('SSH into remote server') {
-//           steps {
-//             sh 'sh jenkins-automate.sh'
-//           }
-//         }
-
-    stage('Docker Build') {
-      steps {
-        sh 'docker build -t hardip1520/jenkins-sample .'
-      }
-    }
-
-    stage('Docker Run') {
+    stage('SSH into remote server') {
           steps {
-//             sh 'docker run -p 9090:8080 -d hardip1520/jenkins-sample'
-            sh 'docker-compose up -d'
+            sh 'sshpass -p "hardip@1520Sinh" ssh "root@159.203.17.93" "bash -s" < ./jenkins-automate.sh'
           }
         }
+
+//     stage('Docker Build') {
+//       steps {
+//         sh 'docker build -t hardip1520/jenkins-sample .'
+//       }
+//     }
+//
+//     stage('Docker Run') {
+//           steps {
+// //             sh 'docker run -p 9090:8080 -d hardip1520/jenkins-sample'
+//             sh 'docker-compose up -d'
+//           }
+//         }
     
     
     stage('Docker Push') {
