@@ -20,6 +20,12 @@ options {
         sh 'docker build -t hardip1520/jenkins-sample .'
       }
     }
+
+    stage('Docker Run') {
+          steps {
+            sh 'docker run -p 9090:8080 -d hardip1520/jenkins-sample'
+          }
+        }
     
     
     stage('Docker Push') {
